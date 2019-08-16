@@ -1,0 +1,465 @@
+databaseChangeLog:
+  - changeSet:
+      id: schema-0.0.1
+      author: bank1
+      changes:
+        - createTable:
+            tableName: xyz_users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                  autoIncrement: true
+              - column:
+                  name: user_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: roles
+                  type: VARCHAR(255)
+        - addPrimaryKey:
+            tableName: xyz_users
+            columnNames: user_name
+            constraintName: pk_users_name
+  - changeSet:
+      id: schema-0.0.1
+      author: bank3
+      changes:
+        - createTable:
+            tableName: bank_account
+            columns:
+              - column:
+                  name: account_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                  autoIncrement: true
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+              - column:
+                  name: currency
+                  type: VARCHAR(255)
+              - column:
+                  name: account_type
+                  type: VARCHAR(255)
+              - column:
+                  name: account_number
+                  type: VARCHAR(255)
+              - column:
+                  name: bank_branch
+                  type: VARCHAR(255)
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: current_balance
+                  type: BIGINT
+              - column:
+                  name: available_balance
+                  type: BIGINT
+        - addPrimaryKey:
+            tableName: bank_account
+            columnNames: account_id
+            constraintName: pk_bank_account
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: bank_account
+            constraintName: fk_user_id
+            onDelete: 'RESTRICT'
+            onUpdate: 'RESTRICT'
+            referencedColumnNames: id
+            referencedTableName: xyz_users
+        - addForeignKeyConstraint:
+            baseColumnNames: title
+            baseTableName: bank_account
+            constraintName: fk_title_account
+            onDelete: 'RESTRICT'
+            onUpdate: 'CASCADE'
+            referencedColumnNames: user_name
+            referencedTableName: xyz_users
+  - changeSet:
+      id: schema-0.0.1
+      author: bank4
+      changes:
+        - createTable:
+            tableName: transactions
+            columns:
+              - column:
+                  name: transaction_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                  autoIncrement: true
+              - column:
+                  name: transaction_type
+                  type: VARCHAR(255)
+              - column:
+                  name: amount
+                  type: FLOAT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: transaction_date
+                  type: DATETIME
+              - column:
+                  name: account_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            tableName: transactions
+            columnNames: transaction_id
+            constraintName: pk_transactions
+        - addForeignKeyConstraint:
+            baseColumnNames: account_id
+            baseTableName: transactions
+            constraintName: fk_account_id_transactions
+            onDelete: 'RESTRICT'
+            onUpdate: 'CASCADE'
+            referencedColumnNames: account_id
+            referencedTableName: bank_account
+  - changeSet:
+      id: data-0.0.1
+      author: bn5
+      changes:
+        - insert:
+            tableName: xyz_users
+            columns:
+              - column:
+                  name: user_name
+                  value: user1
+              - column:
+                  name: password
+                  value: '{bcrypt}$2a$10$bA0UACSyOo6fOKvU7aUg7.qQTPca5IJn383Ur0cr4RFKivLM16GXy'
+              - column:
+                  name: roles
+                  value: USER
+        - insert:
+            tableName: xyz_users
+            columns:
+              - column:
+                  name: user_name
+                  value: admin
+              - column:
+                  name: password
+                  value: '{bcrypt}$2a$10$bA0UACSyOo6fOKvU7aUg7.qQTPca5IJn383Ur0cr4RFKivLM16GXy'
+              - column:
+                  name: roles
+                  value: ADMIN
+  - changeSet:
+      id: data-0.0.1
+      author: bnk5
+      changes:
+        - insert:
+            tableName: xyz_users
+            columns:
+              - column:
+                  name: user_name
+                  value: user2
+              - column:
+                  name: password
+                  value: '{bcrypt}$2a$10$bA0UACSyOo6fOKvU7aUg7.qQTPca5IJn383Ur0cr4RFKivLM16GXy'
+              - column:
+                  name: roles
+                  value: USER
+        - insert:
+            tableName: xyz_users
+            columns:
+              - column:
+                  name: user_name
+                  value: user3
+              - column:
+                  name: password
+                  value: '{bcrypt}$2a$10$bA0UACSyOo6fOKvU7aUg7.qQTPca5IJn383Ur0cr4RFKivLM16GXy'
+              - column:
+                  name: roles
+                  value: USER
+  - changeSet:
+      id: data-0.0.1
+      author: nk5
+      changes:
+        - insert:
+            tableName: xyz_users
+            columns:
+              - column:
+                  name: user_name
+                  value: user4
+              - column:
+                  name: password
+                  value: '{bcrypt}$2a$10$bA0UACSyOo6fOKvU7aUg7.qQTPca5IJn383Ur0cr4RFKivLM16GXy'
+              - column:
+                  name: roles
+                  value: USER
+        - insert:
+            tableName: xyz_users
+            columns:
+              - column:
+                  name: user_name
+                  value: user5
+              - column:
+                  name: password
+                  value: '{bcrypt}$2a$10$bA0UACSyOo6fOKvU7aUg7.qQTPca5IJn383Ur0cr4RFKivLM16GXy'
+              - column:
+                  name: roles
+                  value: USER
+  - changeSet:
+      id: data-0.0.1
+      author: bank7
+      changes:
+        - insert:
+            tableName: bank_account
+            columns:
+              - column:
+                  name: title
+                  value: user1
+              - column:
+                  name: currency
+                  value: PKR
+              - column:
+                  name: account_type
+                  value: current
+              - column:
+                  name: account_number
+                  value: current acount number
+              - column:
+                  name: bank_branch
+                  value: current acount number
+              - column:
+                  name: user_id
+                  value: 1
+              - column:
+                  name: current_balance
+                  value: 12345
+              - column:
+                  name: available_balance
+                  value: 12345
+  - changeSet:
+      id: data-0.0.1
+      author: bn8
+      changes:
+        - insert:
+            tableName: bank_account
+            columns:
+              - column:
+                  name: title
+                  value: user2
+              - column:
+                  name: currency
+                  value: PKR
+              - column:
+                  name: account_type
+                  value: current
+              - column:
+                  name: account_number
+                  value: current acount number
+              - column:
+                  name: bank_branch
+                  value: current acount number
+              - column:
+                  name: user_id
+                  value: 2
+              - column:
+                  name: current_balance
+                  value: 12345
+              - column:
+                  name: available_balance
+                  value: 12345
+
+  - changeSet:
+      id: data-0.0.1
+      author: bnk8
+      changes:
+        - insert:
+            tableName: bank_account
+            columns:
+              - column:
+                  name: title
+                  value: user3
+              - column:
+                  name: currency
+                  value: PKR
+              - column:
+                  name: account_type
+                  value: current
+              - column:
+                  name: account_number
+                  value: current acount number
+              - column:
+                  name: bank_branch
+                  value: current acount number
+              - column:
+                  name: user_id
+                  value: 3
+              - column:
+                  name: current_balance
+                  value: 12345
+              - column:
+                  name: available_balance
+                  value: 12345
+  - changeSet:
+      id: data-0.0.1
+      author: bak8
+      changes:
+        - insert:
+            tableName: bank_account
+            columns:
+              - column:
+                  name: title
+                  value: user4
+              - column:
+                  name: currency
+                  value: PKR
+              - column:
+                  name: account_type
+                  value: current
+              - column:
+                  name: account_number
+                  value: current acount number
+              - column:
+                  name: bank_branch
+                  value: current acount number
+              - column:
+                  name: user_id
+                  value: 4
+              - column:
+                  name: current_balance
+                  value: 12345
+              - column:
+                  name: available_balance
+                  value: 12345
+  - changeSet:
+      id: data-0.0.1
+      author: ban8
+      changes:
+        - insert:
+            tableName: bank_account
+            columns:
+              - column:
+                  name: title
+                  value: user5
+              - column:
+                  name: currency
+                  value: PKR
+              - column:
+                  name: account_type
+                  value: current
+              - column:
+                  name: account_number
+                  value: current acount number
+              - column:
+                  name: bank_branch
+                  value: current acount number
+              - column:
+                  name: user_id
+                  value: 5
+              - column:
+                  name: current_balance
+                  value: 12345
+              - column:
+                  name: available_balance
+                  value: 12345
+  - changeSet:
+      id: data-0.0.1
+      author: bank9
+      changes:
+        - insert:
+            tableName: transactions
+            columns:
+              - column:
+                  name: transaction_type
+                  value: deposit
+              - column:
+                  name: amount
+                  value: 123.0
+              - column:
+                  name: account_id
+                  value: 1
+              - column:
+                  name: transaction_date
+                  valueDate: CURRENT_TIMESTAMP
+  - changeSet:
+      id: data-0.0.1
+      author: bank10
+      changes:
+        - insert:
+            tableName: transactions
+            columns:
+              - column:
+                  name: transaction_type
+                  value: deposit
+              - column:
+                  name: amount
+                  value: 123.034
+              - column:
+                  name: account_id
+                  value: 2
+              - column:
+                  name: transaction_date
+                  valueDate: CURRENT_TIMESTAMP
+  - changeSet:
+      id: data-0.0.1
+      author: bnk9
+      changes:
+        - insert:
+            tableName: transactions
+            columns:
+              - column:
+                  name: transaction_type
+                  value: deposit
+              - column:
+                  name: amount
+                  value: 123.099
+              - column:
+                  name: account_id
+                  value: 3
+              - column:
+                  name: transaction_date
+                  valueDate: CURRENT_TIMESTAMP
+  - changeSet:
+      id: data-0.0.1
+      author: bak9
+      changes:
+        - insert:
+            tableName: transactions
+            columns:
+              - column:
+                  name: transaction_type
+                  value: deposit
+              - column:
+                  name: amount
+                  value: 123.055
+              - column:
+                  name: account_id
+                  value: 4
+              - column:
+                  name: transaction_date
+                  valueDate: CURRENT_TIMESTAMP
+  - changeSet:
+      id: data-0.0.1
+      author: ban9
+      changes:
+        - insert:
+            tableName: transactions
+            columns:
+              - column:
+                  name: transaction_type
+                  value: deposit
+              - column:
+                  name: amount
+                  value: 123.0432
+              - column:
+                  name: account_id
+                  value: 5
+              - column:
+                  name: transaction_date
+                  valueDate: CURRENT_TIMESTAMP
+
+
+
