@@ -1,0 +1,266 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "My Bank"
+host: "localhost:9080"
+basePath: "/bank/api"
+schemes:
+  - "http"
+paths:
+  /account:
+    post:
+      tags:
+        - "BankAccount"
+      summary: "Add a new Bank Account"
+      operationId: "addAccount"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "X-XSRF-TOKEN"
+          in: "header"
+          type: "string"
+          format: "uuid"
+          required: true
+        - in: "body"
+          name: "body"
+          description: "Account object that needs to be added"
+          required: true
+          schema:
+            $ref: "#/definitions/BankAccount"
+      responses:
+        405:
+          description: "Invalid input"
+      security:
+        - basic_auth: []
+    get:
+      tags:
+        - "BankAccount"
+      summary: "get All Accounts"
+      operationId: "AllAccounts"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/BankAccount"
+      security:
+        - basic_auth: []
+  /account/{id}:
+    get:
+      tags:
+        - "BankAccount"
+      summary: "get Bank Account by Id"
+      operationId: "findByAccountId"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/BankAccount"
+        400:
+          description: "Invalid id value"
+      security:
+        - basic_auth: []
+    put:
+      tags:
+        - "BankAccount"
+      summary: "Update an existing account"
+      operationId: "updateAccount"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "X-XSRF-TOKEN"
+          in: "header"
+          type: "string"
+          format: "uuid"
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+        - in: "body"
+          name: "body"
+          description: "Account object that needs to be modified"
+          required: true
+          schema:
+            $ref: "#/definitions/BankAccount"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Account not found"
+        405:
+          description: "Validation exception"
+      security:
+        - basic_auth: []
+    delete:
+      tags:
+        - "BankAccount"
+      summary: "Deletes a account"
+      operationId: "deleteAccount"
+      parameters:
+        - name: "X-XSRF-TOKEN"
+          in: "header"
+          type: "string"
+          format: "uuid"
+          required: true
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/BankAccount"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Account not found"
+      security:
+        - basic_auth: []
+  /transactions:
+    post:
+      tags:
+        - "Transactions"
+      operationId: "addTransaction"
+      summary: "Make a transaction"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "X-XSRF-TOKEN"
+          in: "header"
+          type: "string"
+          format: "uuid"
+          required: true
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/Transactions"
+      responses:
+        405:
+          description: "Invalid input"
+      security:
+        - basic_auth: []
+  /transactions/{id}:
+    get:
+      tags:
+        - "Transactions"
+      operationId: "getById"
+      summary: "get by transaction Id"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Transactions"
+        400:
+          description: "Invalid id value"
+      security:
+        - basic_auth: []
+  /transactions/byAccountId/{id}:
+    get:
+      tags:
+        - "Transactions"
+      operationId: "getByAccountId"
+      summary: "get Transaction by Account ID"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Transactions"
+        400:
+          description: "Invalid id value"
+      security:
+        - basic_auth: []
+securityDefinitions:
+  basic_auth:
+    type: "basic"
+definitions:
+  BankAccount:
+    type: "object"
+    properties:
+      accountId:
+        type: "integer"
+        format: "int64"
+      title:
+        type: "string"
+      accountType:
+        type: "string"
+      bankBranch:
+        type: "string"
+      accountNumber:
+        type: "string"
+      currentBalance:
+        type: "integer"
+      availableBalance:
+        type: "integer"
+      currency:
+        type: "string"
+      userId:
+        type: "integer"
+  Transactions:
+    type: "object"
+    properties:
+      transactionId:
+        type: "integer"
+        format: "int64"
+      accountId:
+        type: "integer"
+        format: "int64"
+      transactionType:
+        type: "string"
+      amount:
+        type: "number"
+        format: "double"
+      transactionDate:
+        type: "string"
+        format: "Date"
+  Users:
+    type: "object"
+    properties:
+      userId:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      password:
+        type: "string"
+      role:
+        type: "string"
