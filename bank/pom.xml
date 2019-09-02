@@ -29,7 +29,9 @@
 
 	<modules>
 		<module>bank-be</module>
-	</modules>
+        <module>bank-fe</module>
+        <module>bank-test</module>
+    </modules>
 
 	<build>
 		<pluginManagement>
